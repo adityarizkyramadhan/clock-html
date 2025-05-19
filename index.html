@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jam Digital Elegan</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #141e30, #243b55);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #ffffff;
+            overflow: hidden;
+            transition: background 2s ease;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .clock {
+            display: flex;
+            gap: 10px;
+            font-size: 10vw;
+            font-weight: 200;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            margin-bottom: 2vh;
+            position: relative;
+        }
+
+        .clock span {
+            position: relative;
+            width: 1.1em;
+            text-align: center;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .clock span:hover {
+            transform: translateY(-5px);
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .colon {
+            align-self: center;
+            font-size: 0.8em;
+            font-weight: 300;
+            animation: blink 1s infinite;
+        }
+
+        .date {
+            font-size: 2vw;
+            margin-top: 20px;
+            opacity: 0.7;
+            letter-spacing: 3px;
+        }
+
+        .ampm {
+            font-size: 2vw;
+            margin-top: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        .greeting {
+            font-size: 3vw;
+            margin-top: 30px;
+            font-weight: 300;
+            opacity: 0.9;
+        }
+
+        .motivation {
+            font-size: 1.8vw;
+            margin-top: 15px;
+            font-weight: 300;
+            opacity: 0.9;
+            text-align: center;
+            max-width: 80%;
+            font-style: italic;
+            padding: 10px 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            transition: transform 0.5s ease;
+            animation: fadeIn 2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 0.9; transform: translateY(0); }
+        }
+
+        .background-glow {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+            filter: blur(30px);
+            z-index: -1;
+            animation: float 10s infinite ease-in-out;
+        }
+
+        .background-glow:nth-child(1) {
+            top: 20%;
+            left: 30%;
+            animation-delay: 0s;
+        }
+
+        .background-glow:nth-child(2) {
+            top: 40%;
+            right: 20%;
+            animation-delay: 3s;
+        }
+
+        .background-glow:nth-child(3) {
+            bottom: 20%;
+            left: 40%;
+            animation-delay: 6s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            50% { transform: translate(20px, 20px); }
+            100% { transform: translate(0, 0); }
+        }
+
+        .fullscreen-btn {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            z-index: 10;
+        }
+
+        .fullscreen-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .city-select {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            z-index: 10;
+            outline: none;
+        }
+
+        .city-select:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .city-select option {
+            background-color: #243b55;
+            color: white;
+        }
+
+        .prayer-times {
+            margin-top: 25px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .prayer-times h3 {
+            margin-bottom: 10px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            font-size: 1.5vw;
+        }
+
+        .prayer-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            font-size: 1.2vw;
+        }
+
+        .prayer-time {
+            padding: 8px;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .prayer-time:hover {
+            transform: translateY(-3px);
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .prayer-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .prayer-hour {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        .next-prayer {
+            background-color: rgba(72, 219, 251, 0.3);
+            box-shadow: 0 0 10px rgba(72, 219, 251, 0.5);
+        }
+
+        /* Animasi lucu */
+        .animation-container {
+            position: absolute;
+            bottom: 100px;
+            right: 50px;
+            width: 100px;
+            height: 100px;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .sun {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #ffdb59 0%, #ffb347 100%);
+            box-shadow: 0 0 20px rgba(255, 211, 67, 0.8);
+            animation: rotate 20s linear infinite, bounce 3s ease-in-out infinite;
+        }
+
+        .sun-face {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .eyes {
+            position: absolute;
+            top: 30%;
+            width: 10px;
+            height: 10px;
+            background-color: #333;
+            border-radius: 50%;
+        }
+
+        .left-eye {
+            left: 25%;
+        }
+
+        .right-eye {
+            right: 25%;
+        }
+
+        .mouth {
+            position: absolute;
+            bottom: 25%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 25px;
+            height: 15px;
+            border-bottom: 3px solid #333;
+            border-radius: 50%;
+        }
+
+        .moon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #f5f7fa 0%, #c3cfe2 100%);
+            box-shadow: 0 0 20px rgba(195, 207, 226, 0.8);
+            position: relative;
+            animation: wobble 3s ease-in-out infinite;
+            display: none;
+        }
+
+        .crater {
+            position: absolute;
+            background-color: rgba(195, 207, 226, 0.8);
+            border-radius: 50%;
+        }
+
+        .crater1 {
+            width: 15px;
+            height: 15px;
+            top: 15px;
+            left: 15px;
+        }
+
+        .crater2 {
+            width: 10px;
+            height: 10px;
+            top: 35px;
+            right: 10px;
+        }
+
+        .crater3 {
+            width: 8px;
+            height: 8px;
+            bottom: 15px;
+            left: 25px;
+        }
+
+        .star {
+            position: absolute;
+            background-color: white;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            animation: twinkle 2s ease-in-out infinite;
+        }
+
+        .star1 {
+            width: 15px;
+            height: 15px;
+            top: 10px;
+            right: 10px;
+            animation-delay: 0s;
+        }
+
+        .star2 {
+            width: 10px;
+            height: 10px;
+            top: 40px;
+            left: 10px;
+            animation-delay: 0.5s;
+        }
+
+        .star3 {
+            width: 12px;
+            height: 12px;
+            bottom: 15px;
+            right: 30px;
+            animation-delay: 1s;
+        }
+
+        .cloud {
+            position: absolute;
+            width: 70px;
+            height: 30px;
+            background-color: white;
+            border-radius: 30px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            animation: float-clouds 10s linear infinite;
+            display: none;
+        }
+
+        .cloud::before, .cloud::after {
+            content: '';
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+        }
+
+        .cloud::before {
+            width: 35px;
+            height: 35px;
+            top: -20px;
+            left: 10px;
+        }
+
+        .cloud::after {
+            width: 25px;
+            height: 25px;
+            top: -15px;
+            right: 10px;
+        }
+
+        .raindrop {
+            position: absolute;
+            width: 3px;
+            height: 10px;
+            background-color: rgba(72, 219, 251, 0.8);
+            border-radius: 0 0 5px 5px;
+            animation: rain 1s linear infinite;
+            display: none;
+        }
+
+        .raindrop1 {
+            left: 20px;
+            top: 40px;
+            animation-delay: 0s;
+        }
+
+        .raindrop2 {
+            left: 35px;
+            top: 40px;
+            animation-delay: 0.2s;
+        }
+
+        .raindrop3 {
+            left: 50px;
+            top: 40px;
+            animation-delay: 0.4s;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes wobble {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        @keyframes float-clouds {
+            0% { transform: translateX(-150px); }
+            100% { transform: translateX(150px); }
+        }
+
+        @keyframes rain {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(30px); opacity: 0; }
+        }
+
+        @media (max-width: 768px) {
+            .clock {
+                font-size: 15vw;
+            }
+            
+            .date, .ampm {
+                font-size: 4vw;
+            }
+            
+            .greeting {
+                font-size: 5vw;
+            }
+
+            .motivation {
+                font-size: 3.5vw;
+                max-width: 90%;
+            }
+
+            .prayer-times h3 {
+                font-size: 3vw;
+            }
+
+            .prayer-grid {
+                font-size: 2.5vw;
+            }
+        }
+
+        @media (min-width: 1440px) {
+            .clock {
+                font-size: 8em;
+            }
+            
+            .date, .ampm {
+                font-size: 1.5em;
+            }
+            
+            .greeting {
+                font-size: 2em;
+            }
+
+            .motivation {
+                font-size: 1.2em;
+            }
+
+            .prayer-times h3 {
+                font-size: 1.2em;
+            }
+
+            .prayer-grid {
+                font-size: 1em;
+            }
+        }
+
+        /* Animasi karakter lucu */
+        .character {
+            position: absolute;
+            bottom: 80px;
+            left: 50px;
+            width: 80px;
+            height: 80px;
+            z-index: 1;
+            display: none;
+        }
+
+        .character-morning {
+            display: block;
+            animation: walk 20s linear infinite;
+        }
+
+        .character-night {
+            display: block;
+            animation: float 10s ease-in-out infinite;
+        }
+
+        @keyframes walk {
+            0% { transform: translateX(-150px); }
+            45% { transform: translateX(150px) scaleX(1); }
+            50% { transform: translateX(150px) scaleX(-1); }
+            95% { transform: translateX(-150px) scaleX(-1); }
+            100% { transform: translateX(-150px) scaleX(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-glow"></div>
+    <div class="background-glow"></div>
+    <div class="background-glow"></div>
+
+    <select class="city-select" id="citySelect">
+        <option value="7">Jakarta (GMT+7)</option>
+        <option value="8">Singapore (GMT+8)</option>
+        <option value="9">Tokyo (GMT+9)</option>
+        <option value="0">London (GMT+0)</option>
+        <option value="-5">New York (GMT-5)</option>
+        <option value="-8">Los Angeles (GMT-8)</option>
+        <option value="1">Paris (GMT+1)</option>
+        <option value="3">Moscow (GMT+3)</option>
+        <option value="5">Karachi (GMT+5)</option>
+        <option value="5.5">New Delhi (GMT+5:30)</option>
+    </select>
+
+    <div class="container">
+        <div class="greeting" id="greeting">Selamat Pagi</div>
+        <div class="motivation" style="margin-bottom: 30px;" id="motivation">Hari ini adalah kesempatan baru untuk menulis kisah indah dalam hidupmu!</div>
+        <div class="clock">
+            <span id="hours">00</span>
+            <div class="colon">:</div>
+            <span id="minutes">00</span>
+            <div class="colon">:</div>
+            <span id="seconds">00</span>
+        </div>
+        <div class="ampm" id="ampm">AM</div>
+        <div class="date" id="date">SENIN, 1 JANUARI 2023</div>
+
+        <div class="prayer-times">
+            <h3>JADWAL SHOLAT YOGYAKARTA</h3>
+            <div class="prayer-grid">
+                <div class="prayer-time" id="fajr">
+                    <div class="prayer-name">Subuh</div>
+                    <div class="prayer-hour" id="fajr-time">04:30</div>
+                </div>
+                <div class="prayer-time" id="dhuhr">
+                    <div class="prayer-name">Dzuhur</div>
+                    <div class="prayer-hour" id="dhuhr-time">11:45</div>
+                </div>
+                <div class="prayer-time" id="asr">
+                    <div class="prayer-name">Ashar</div>
+                    <div class="prayer-hour" id="asr-time">15:00</div>
+                </div>
+                <div class="prayer-time" id="maghrib">
+                    <div class="prayer-name">Maghrib</div>
+                    <div class="prayer-hour" id="maghrib-time">17:45</div>
+                </div>
+                <div class="prayer-time" id="isha">
+                    <div class="prayer-name">Isya</div>
+                    <div class="prayer-hour" id="isha-time">19:00</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="animation-container">
+        <div class="sun">
+            <div class="sun-face">
+                <div class="eyes left-eye"></div>
+                <div class="eyes right-eye"></div>
+                <div class="mouth"></div>
+            </div>
+        </div>
+        <div class="moon">
+            <div class="crater crater1"></div>
+            <div class="crater crater2"></div>
+            <div class="crater crater3"></div>
+        </div>
+        <div class="star star1"></div>
+        <div class="star star2"></div>
+        <div class="star star3"></div>
+        <div class="cloud"></div>
+        <div class="raindrop raindrop1"></div>
+        <div class="raindrop raindrop2"></div>
+        <div class="raindrop raindrop3"></div>
+    </div>
+
+    <div class="character">
+        <svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+            <!-- Karakter pagi -->
+            <g class="character-morning">
+                <circle cx="40" cy="30" r="20" fill="#FFD24C" />
+                <circle cx="32" cy="25" r="3" fill="#333" />
+                <circle cx="48" cy="25" r="3" fill="#333" />
+                <path d="M32 40 Q 40 45 48 40" stroke="#333" stroke-width="2" fill="none" />
+                <line x1="40" y1="50" x2="40" y2="70" stroke="#FFD24C" stroke-width="4" />
+                <line x1="40" y1="55" x2="25" y2="65" stroke="#FFD24C" stroke-width="4" />
+                <line x1="40" y1="55" x2="55" y2="65" stroke="#FFD24C" stroke-width="4" />
+                <line x1="40" y1="70" x2="30" y2="80" stroke="#FFD24C" stroke-width="4" />
+                <line x1="40" y1="70" x2="50" y2="80" stroke="#FFD24C" stroke-width="4" />
+            </g>
+            <!-- Karakter malam -->
+            <g class="character-night" style="display:none;">
+                <circle cx="40" cy="30" r="20" fill="#C3CFE2" />
+                <circle cx="32" cy="25" r="3" fill="#333" />
+                <circle cx="48" cy="25" r="3" fill="#333" />
+                <path d="M32 35 Q 40 40 48 35" stroke="#333" stroke-width="2" fill="none" />
+                <path d="M32 35 Q 40 30 48 35" stroke="#333" stroke-width="2" fill="none" />
+                <circle cx="35" cy="15" r="3" fill="#333" />
+                <circle cx="45" cy="15" r="3" fill="#333" />
+                <line x1="40" y1="50" x2="40" y2="70" stroke="#C3CFE2" stroke-width="4" />
+                <line x1="40" y1="55" x2="25" y2="60" stroke="#C3CFE2" stroke-width="4" />
+                <line x1="40" y1="55" x2="55" y2="60" stroke="#C3CFE2" stroke-width="4" />
+                <line x1="40" y1="70" x2="30" y2="75" stroke="#C3CFE2" stroke-width="4" />
+                <line x1="40" y1="70" x2="50" y2="75" stroke="#C3CFE2" stroke-width="4" />
+            </g>
+        </svg>
+    </div>
+
+    <button class="fullscreen-btn" id="fullscreenBtn">Mode Layar Penuh</button>
+
+    <script>
+    const latitude = -7.8223561;
+    const longitude = 110.331802777778;
+
+    async function fetchPrayerTimes() {
+        try {
+            const response = await fetch(`https://waktu-sholat.vercel.app/prayer?latitude=${latitude}&longitude=${longitude}`);
+            const data = await response.json();
+            
+            // Ambil tanggal hari ini dalam format YYYY-M-D
+            const today = new Date();
+            const formattedDate = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+
+            // Cari jadwal untuk hari ini
+            const todayPrayer = data.prayers.find(p => p.date === formattedDate);
+
+            if (!todayPrayer) {
+                console.warn('Jadwal sholat untuk hari ini tidak ditemukan.');
+                return;
+            }
+
+            const time = todayPrayer.time;
+
+            // Simpan waktu sholat ke objek global
+            prayerTimes = {
+                fajr: time.subuh,
+                dhuhr: time.dzuhur,
+                asr: time.ashar,
+                maghrib: time.maghrib,
+                isha: time.isya
+            };
+
+            // Update jadwal di UI
+            document.getElementById('fajr-time').textContent = prayerTimes.fajr;
+            document.getElementById('dhuhr-time').textContent = prayerTimes.dhuhr;
+            document.getElementById('asr-time').textContent = prayerTimes.asr;
+            document.getElementById('maghrib-time').textContent = prayerTimes.maghrib;
+            document.getElementById('isha-time').textContent = prayerTimes.isha;
+        } catch (err) {
+            console.error('Gagal mengambil jadwal sholat:', err);
+        }
+    }
+
+    // Default nilai agar tidak error sebelum API dipanggil
+    let prayerTimes = {
+        fajr: "04:26",
+        dhuhr: "11:45",
+        asr: "15:05",
+        maghrib: "17:48",
+        isha: "19:02"
+    };
+
+        // Array kata-kata motivasi
+        const motivationalQuotes = [
+            "Hari ini adalah kesempatan baru untuk menulis kisah indah dalam hidupmu!",
+            "Sukses adalah hasil dari usaha kecil yang dilakukan secara konsisten setiap hari.",
+            "Jangan bandingkan dirimu dengan orang lain, bandingkan dengan dirimu yang kemarin.",
+            "Kesuksesan bukan tentang seberapa tinggi kau naik, tapi seberapa jauh kau telah berjalan.",
+            "Hidup ini singkat, tersenyumlah selagi kau masih punya gigi!",
+            "Kegagalan hanyalah kesempatan untuk memulai lagi dengan lebih cerdas.",
+            "Keajaiban selalu terjadi pada mereka yang tidak pernah berhenti percaya.",
+            "Kebahagiaan adalah pilihan. Pilihlah untuk bahagia hari ini.",
+            "Bersyukurlah selalu, maka kau akan merasa cukup.",
+            "Bukan masalahnya yang penting, tapi bagaimana kau menghadapinya.",
+            "Tetap semangat dan jangan lupa minum air yang cukup!",
+            "Tidak ada yang tidak mungkin bagi mereka yang percaya.",
+            "Jangan takut untuk gagal, takutlah untuk tidak mencoba.",
+            "Segala sesuatu yang kau impikan berada di ujung zona nyamanmu.",
+            "Kau lebih kuat dari apa yang kau pikirkan.",
+            "Allah tidak akan memberimu cobaan melebihi kemampuanmu.",
+            "Setiap langkah kecil tetap akan membawamu menuju tujuan.",
+            "Jadilah perubahan yang ingin kau lihat di dunia.",
+            "Ketika kau merasa ingin menyerah, ingatlah mengapa kau memulai.",
+            "Berbahagialah, karena hidupmu adalah hadiah yang berharga."
+        ];
+        
+        fetchPrayerTimes();
+
+        setInterval(() => {
+            const now = new Date();
+            if (now.getHours() === 0 && now.getMinutes() === 0) {
+                fetchPrayerTimes();
+            }
+        }, 60000); // Cek tiap menit
+
+        // Update jadwal sholat di UI
+        document.getElementById('fajr-time').textContent = prayerTimes.fajr;
+        document.getElementById('dhuhr-time').textContent = prayerTimes.dhuhr;
+        document.getElementById('asr-time').textContent = prayerTimes.asr;
+        document.getElementById('maghrib-time').textContent = prayerTimes.maghrib;
+        document.getElementById('isha-time').textContent = prayerTimes.isha;
+
+        function updateClock() {
+            // Mengambil nilai offset timezone yang dipilih user
+            const offset = parseFloat(document.getElementById('citySelect').value);
+            
+            // Mendapatkan waktu UTC
+            const now = new Date();
+            const utcHour = now.getUTCHours();
+            const utcMinutes = now.getUTCMinutes();
+            const utcSeconds = now.getUTCSeconds();
+            
+            // Menghitung waktu berdasarkan offset yang dipilih
+            let hours = (utcHour + offset) % 24;
+            if (hours < 0) hours += 24;
+            const minutes = utcMinutes;
+            const seconds = utcSeconds;
+            
+            // Tentukan salam berdasarkan waktu
+            let greeting = "Selamat ";
+            if (hours >= 5 && hours < 11) {
+                greeting += "Pagi";
+            } else if (hours >= 11 && hours < 15) {
+                greeting += "Siang";
+            } else if (hours >= 15 && hours < 19) {
+                greeting += "Sore";
+            } else {
+                greeting += "Malam";
+            }
+            
+            document.getElementById('greeting').textContent = greeting;
+            
+            // Format AM/PM
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            const display12Hours = hours % 12;
+            const display12HoursFormatted = display12Hours ? display12Hours : 12; // jam 0 ditampilkan sebagai 12
+            
+            document.getElementById('hours').textContent = display12HoursFormatted.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            document.getElementById('ampm').textContent = ampm;
+            
+            // Format tanggal dalam bahasa Indonesia berdasarkan waktu lokal
+            const days = ['MINGGU', 'SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU'];
+            const months = ['JANUARI', 'FEBRUARI', 'MARET', 'APRIL', 'MEI', 'JUNI', 'JULI', 'AGUSTUS', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DESEMBER'];
+            
+            const day = days[now.getDay()];
+            const date = now.getDate();
+            const month = months[now.getMonth()];
+            const year = now.getFullYear();
+            
+            document.getElementById('date').textContent = `${day}, ${date} ${month} ${year}`;
+            
+            // Update warna background berdasarkan waktu
+            updateBackgroundColor(hours);
+            
+            // Update jadwal sholat Yogyakarta - tandai waktu sholat berikutnya
+            updateNextPrayerTime(hours, minutes);
+            
+            // Update animasi berdasarkan waktu
+            updateAnimation(hours);
+        }
+        
+        function updateBackgroundColor(hour) {
+            let color1, color2;
+            
+            if (hour >= 5 && hour < 11) {
+                // Pagi
+                color1 = '#2980b9';
+                color2 = '#6dd5fa';
+                document.querySelector('.sun').style.display = 'block';
+                document.querySelector('.moon').style.display = 'none';
+                document.querySelectorAll('.star').forEach(star => star.style.display = 'none');
+                document.querySelector('.cloud').style.display = 'block';
+                document.querySelectorAll('.raindrop').forEach(drop => drop.style.display = 'none');
+                document.querySelector('.character-morning').style.display = 'block';
+                document.querySelector('.character-night').style.display = 'none';
+            } else if (hour >= 15 && hour < 19) {
+                // Sore
+                color1 = '#ff512f';
+                color2 = '#dd2476';
+                document.querySelector('.sun').style.display = 'block';
+                document.querySelector('.moon').style.display = 'none';
+                document.querySelectorAll('.star').forEach(star => star.style.display = 'none');
+                document.querySelector('.cloud').style.display = 'none';
+                document.querySelectorAll('.raindrop').forEach(drop => drop.style.display = 'none');
+                document.querySelector('.character-morning').style.display = 'block';
+                document.querySelector('.character-night').style.display = 'none';
+            } else {
+                // Malam
+                color1 = '#141e30';
+                color2 = '#243b55';
+                document.querySelector('.sun').style.display = 'none';
+                document.querySelector('.moon').style.display = 'block';
+                document.querySelectorAll('.star').forEach(star => star.style.display = 'block');
+                document.querySelector('.cloud').style.display = 'none';
+                document.querySelectorAll('.raindrop').forEach(drop => drop.style.display = 'none');
+                document.querySelector('.character-morning').style.display = 'none';
+                document.querySelector('.character-night').style.display = 'block';
+            }
+            
+            document.body.style.background = `linear-gradient(135deg, ${color1}, ${color2})`;
+        }
+
+        function updateAnimation(hour) {
+            const sunFace = document.querySelector('.sun-face');
+            
+            // Mengubah ekspresi wajah matahari berdasarkan waktu
+            if (hour >= 5 && hour < 11) {
+                // Pagi - Matahari tersenyum
+                sunFace.querySelector('.mouth').style.borderBottom = '3px solid #333';
+                sunFace.querySelector('.mouth').style.borderTop = 'none';
+            } else if (hour >= 11 && hour < 15) {
+                // Siang - Matahari netral
+                sunFace.querySelector('.mouth').style.borderBottom = 'none';
+                sunFace.querySelector('.mouth').style.borderTop = 'none';
+                sunFace.querySelector('.mouth').style.borderLeft = '3px solid #333';
+            } else if (hour >= 15 && hour < 19) {
+                // Sore - Matahari tersenyum lebar
+                sunFace.querySelector('.mouth').style.borderBottom = '3px solid #333';
+                sunFace.querySelector('.mouth').style.height = '20px';
+            }
+        }
+
+        // Menentukan waktu sholat berikutnya dan menyorotnya
+        function updateNextPrayerTime(currentHour, currentMinute) {
+            const currentTimeInMinutes = currentHour * 60 + currentMinute;
+            
+            // Convert prayer times to minutes for comparison
+            const prayerTimesInMinutes = {
+                "fajr": convertToMinutes(prayerTimes.fajr),
+                "dhuhr": convertToMinutes(prayerTimes.dhuhr),
+                "asr": convertToMinutes(prayerTimes.asr),
+                "maghrib": convertToMinutes(prayerTimes.maghrib),
+                "isha": convertToMinutes(prayerTimes.isha)
+            };
+            
+            // Reset all highlights
+            document.querySelectorAll('.prayer-time').forEach(el => {
+                el.classList.remove('next-prayer');
+            });
+            
+            // Find next prayer time
+            let nextPrayer = null;
+            
+            if (currentTimeInMinutes < prayerTimesInMinutes.fajr) {
+                nextPrayer = "fajr";
+            } else if (currentTimeInMinutes < prayerTimesInMinutes.dhuhr) {
+                nextPrayer = "dhuhr";
+            } else if (currentTimeInMinutes < prayerTimesInMinutes.asr) {
+                nextPrayer = "asr";
+            } else if (currentTimeInMinutes < prayerTimesInMinutes.maghrib) {
+                nextPrayer = "maghrib";
+            } else if (currentTimeInMinutes < prayerTimesInMinutes.isha) {
+                nextPrayer = "isha";
+            } else {
+                // After Isha, next prayer is tomorrow's Fajr
+                nextPrayer = "fajr";
+            }
+            
+            // Highlight next prayer
+            document.getElementById(nextPrayer).classList.add('next-prayer');
+        }
+        
+        function convertToMinutes(timeString) {
+            const [hours, minutes] = timeString.split(':').map(Number);
+            return hours * 60 + minutes;
+        }
+        
+        // Change motivational quote every 30 seconds
+        function updateMotivationalQuote() {
+            const motivationElement = document.getElementById('motivation');
+            const randomIndex = Math.floor(Math.random() * motivationalQuotes.length);
+            motivationElement.style.opacity = 0;
+            
+            setTimeout(() => {
+                motivationElement.textContent = motivationalQuotes[randomIndex];
+                motivationElement.style.opacity = 0.9;
+            }, 500);
+        }
+        
+        // Toggle fullscreen mode
+        document.getElementById('fullscreenBtn').addEventListener('click', function() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    alert(`Error attempting to enable fullscreen mode: ${err.message}`);
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        });
+        
+        // Update when timezone selection changes
+        document.getElementById('citySelect').addEventListener('change', updateClock);
+        
+        // Prevent screen saver/sleep
+        function keepAlive() {
+            if (navigator.wakeLock) {
+                // This is a modern approach but not widely supported
+                const preventSleep = async () => {
+                    try {
+                        const wakeLock = await navigator.wakeLock.request('screen');
+                        console.log('Screen will stay awake');
+                    } catch (err) {
+                        console.error(`${err.name}, ${err.message}`);
+                    }
+                };
+                preventSleep();
+            } else {
+                // Fallback method - less reliable
+                setInterval(() => {
+                    const now = new Date();
+                    const pixel = now.getMilliseconds();
+                    const body = document.querySelector('body');
+                    body.style.padding = `${(pixel % 2) / 10}px`;
+                    setTimeout(() => {
+                        body.style.padding = '0px';
+                    }, 500);
+                }, 60000);
+            }
+        }
+        
+        // Update clock every second
+        setInterval(updateClock, 1000);
+        
+        // Update motivational quote every 30 seconds
+        setInterval(updateMotivationalQuote, 30000);
+        
+        // Initial calls to set everything up
+        updateClock();
+        updateMotivationalQuote();
+        keepAlive();
+        
+        // Hide cursor if inactive
+        let timeout;
+        function hideCursor() {
+            document.body.style.cursor = 'none';
+        }
+        
+        document.addEventListener('mousemove', function() {
+            document.body.style.cursor = 'default';
+            clearTimeout(timeout);
+            timeout = setTimeout(hideCursor, 3000);
+        });
+        
+        // Initial call
+        timeout = setTimeout(hideCursor, 3000);
+    </script>
+</body>
+</html>
